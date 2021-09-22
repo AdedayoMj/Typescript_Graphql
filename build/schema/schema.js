@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const graphql_1 = require("graphql");
+const book_1 = __importDefault(require("../models/book"));
 const author_1 = __importDefault(require("../models/author"));
 const BookType = new graphql_1.GraphQLObjectType({
     name: "Book",
@@ -15,7 +16,7 @@ const BookType = new graphql_1.GraphQLObjectType({
             type: AuthorType,
             resolve(parent, args) {
                 //code to get data from db
-                // return _.find(authors, { id: parent.authorId });
+                return author_1.default.findById(parent.authorId);
             },
         },
     }),
@@ -30,7 +31,7 @@ const AuthorType = new graphql_1.GraphQLObjectType({
             type: new graphql_1.GraphQLList(BookType),
             resolve(parent, args) {
                 //code to get data from db
-                // return _.filter(books, { authorId: parent.id });
+                return book_1.default.find({ authorId: parent.id });
             },
         },
     }),
@@ -42,6 +43,7 @@ const RootQuery = new graphql_1.GraphQLObjectType({
             type: BookType,
             args: { id: { type: graphql_1.GraphQLID } },
             resolve(parent, args) {
+                return book_1.default.findById(args.id);
                 //code to get data from db
                 // return _.find(books, { id: args.id });
             },
@@ -51,19 +53,19 @@ const RootQuery = new graphql_1.GraphQLObjectType({
             args: { id: { type: graphql_1.GraphQLID } },
             resolve(parent, args) {
                 //code to get data from db
-                // return _.find(authors, { id: args.id });
+                return author_1.default.findById(args.id);
             },
         },
         books: {
             type: new graphql_1.GraphQLList(BookType),
             resolve(parent, args) {
-                // return books;
+                return book_1.default.find({});
             },
         },
         authors: {
             type: new graphql_1.GraphQLList(AuthorType),
             resolve(parent, args) {
-                // return authors;
+                return author_1.default.find({});
             },
         },
     },
@@ -82,7 +84,23 @@ const Mutation = new graphql_1.GraphQLObjectType({
                     name: args.name,
                     age: args.age,
                 });
-                author.save();
+                return author.save();
+            },
+        },
+        addBook: {
+            type: BookType,
+            args: {
+                name: { type: graphql_1.GraphQLString },
+                genre: { type: graphql_1.GraphQLString },
+                authorId: { type: graphql_1.GraphQLID },
+            },
+            resolve(parent, args) {
+                let book = new book_1.default({
+                    name: args.name,
+                    genre: args.genre,
+                    authorId: args.authorId,
+                });
+                return book.save();
             },
         },
     },

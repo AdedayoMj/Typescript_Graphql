@@ -85,7 +85,7 @@ else {
             message: error.message,
         });
     });
-    httpServer.listen(process_1.default.env.PORT || 2121, () => logging_1.default.info(`Server is running ${config_1.default.server.host}:${process_1.default.env.PORT}`));
+    httpServer.listen(process_1.default.env.PORT || 2020, () => logging_1.default.info(`Server is running ${config_1.default.server.host}:${process_1.default.env.PORT}`));
     console.log(`Worker ${process_1.default.pid} started`);
 }
 //# sourceMappingURL=index.js.map

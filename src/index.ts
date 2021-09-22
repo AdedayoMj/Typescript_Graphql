@@ -78,7 +78,7 @@ if (cluster.isPrimary) {
     });
   });
 
-  httpServer.listen(process.env.PORT || 2121, () =>
+  httpServer.listen(process.env.PORT || 2020, () =>
     logging.info(`Server is running ${config.server.host}:${process.env.PORT}`)
   );
   console.log(`Worker ${process.pid} started`);
